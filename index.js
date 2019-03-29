@@ -18,7 +18,7 @@ const knexConfig = {
 
   const db = knex(knexConfig);
 
-//=====Projects CRUD =====
+//  =====Projects CRUD =====
 
 server.get('/api/projects', (req, res) => {
     db('projects')
@@ -75,23 +75,31 @@ server.get('/api/projects/:id/actions', (req, res) => {
 
 
 server.post('/api/projects', (req, res) => {
-    db('projects')
-      .insert(req.body)
-      .then(ids => {
-          const id = ids[0];
-          db('projects')
-              .where({ id })
-              .first()
-              .then(project => {
-                  res.status(201).json(project);
-              })
-              .catch(err => {
-                  res.status(500).json(err)
-              })
-      })
+    const { name } = req.body;
+    const { description } = req.body;
+
+    if (!name || !description) {
+        res.status(400).json({ errorMessage: 'Please provide a project name and description.' })
+    } else {
+        db('projects')
+        .insert(req.body)
+        .then(ids => {
+            const id = ids[0];
+            db('projects')
+                .where({ id })
+                .first()
+                .then(project => {
+                    res.status(201).json(project);
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        })
+
+    }
 })
 
-//=====Actions CRUD =====
+//  =====Actions CRUD =====
 
 server.get('/api/actions', (req, res) => {
     db('actions')
@@ -104,20 +112,28 @@ server.get('/api/actions', (req, res) => {
 })
 
 server.post('/api/actions', (req, res) => {
+    const description = req.params;
+    const notes = req.params;
+    const projectId = req.params;
+
+if (!description || !notes || !projectId) {
+    res.status(400).json({ errorMessage: 'Please provide a action description, notes and project id.' })
+} else {
     db('actions')
-      .insert(req.body)
-      .then(ids => {
-          const id = ids[0];
-          db('actions')
-              .where({ id })
-              .first()
-              .then(action => {
-                  res.status(201).json(action);
-              })
-              .catch(err => {
-                  res.status(500).json(err)
-              })
-      })
+        .insert(req.body)
+        .then(ids => {
+            const id = ids[0];
+            db('actions')
+                .where({ id })
+                .first()
+                .then(action => {
+                    res.status(201).json(action);
+                })
+                .catch(err => {
+                    res.status(500).json(err)
+                })
+        })
+    }
 })
 
 
