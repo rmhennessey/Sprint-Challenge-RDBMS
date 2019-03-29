@@ -99,6 +99,42 @@ server.post('/api/projects', (req, res) => {
     }
 })
 
+server.put('/api/projects/:id', (req, res) => {
+    db ('projects')
+        .where ({ id: req.params.id })
+        .update(req.body)
+        .then(count => {
+        if (count > 0) {
+            db('projects')
+                .where({ id: req.params.id })
+                .first();
+
+                res.status(200).json(count);
+        } else {
+            res.status(404).json({ message: 'Project not found' })
+        }
+    })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+})
+
+server.delete('/api/projects/:id', (req, res) => {
+    db('projects')
+        .where({ id: req.params.id })
+        .del()
+        .then(count => {
+        if (count > 0 ) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Project not found' });
+        }
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+});
+
 //  =====Actions CRUD =====
 
 server.get('/api/actions', (req, res) => {
@@ -109,6 +145,24 @@ server.get('/api/actions', (req, res) => {
       .catch(error => {
           res.status(500).json(error);
       })
+})
+
+server.get('/api/actions/:id', (req, res) => {
+    const actionId = req.params.id;
+
+  db('actions')
+      .where({ id: actionId })
+      .first()
+      .then(action => {
+          if (action) {
+              res.status(200).json(action);
+          } else {
+              res.status(404).json({message: 'Action not found' })
+          }
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    })
 })
 
 server.post('/api/actions', (req, res) => {
@@ -135,6 +189,42 @@ if (!description || !notes || !projectId) {
         })
     }
 })
+
+server.put('/api/actions/:id', (req, res) => {
+    db ('actions')
+        .where ({ id: req.params.id })
+        .update(req.body)
+        .then(count => {
+        if (count > 0) {
+            db('actions')
+                .where({ id: req.params.id })
+                .first();
+
+                res.status(200).json(count);
+        } else {
+            res.status(404).json({ message: 'Action not found' })
+        }
+    })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+})
+
+server.delete('/api/actions/:id', (req, res) => {
+    db('actions')
+        .where({ id: req.params.id })
+        .del()
+        .then(count => {
+        if (count > 0 ) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Action not found' });
+        }
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+});
 
 
   const port = process.env.PORT || 5000;
