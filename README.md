@@ -34,15 +34,24 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 1. Explain the difference between `RDBMS` and `SQL`.
 
+RDBMS is a Relational Database Management System.
+
+SQL, the Structured Query Language, is a language that is typically used to query the RDBMS.
+
+So RDBMS is the system, and SQL is the language used to interact with the system. 
 
 1. Why do tables need a `primary key`?
 
+Primary keys are the unique identifier that makes it possible to identify each row in the table.
 
 1. What is the name given to a table column that references the primary key on another table.
 
 Foreign Key.
 
 1. What do we need in order to have a _many to many_ relationship between two tables.
+
+To model this relationship we need to introduce a third table that holds foreign keys that reference the primary key on the related tables.
+
 
 ## Project Set Up
 
